@@ -52,6 +52,7 @@ void matrix_init(){
     SB(1); // Select BANK1 as the default bank  
 }
 
+
 void pulse_SCK(){
     SCK(0);
     for (int i = 0; i < 2; i++) asm volatile ("nop"); // Wait for 2 cycles (aprox 25ns)
@@ -141,7 +142,7 @@ void init_bank0(){
 
 // This function is responsible for testing the LED Matrix by displaying a pattern of colors as shown by the schematic
 void test_pixels() {
-//   0 32 64 96 128 160 192 224   + 31 // Intensity
+//   0 32 64 96 128 160 192 224   + 31
     /*  *  *  *  *  *  *  */ //R
     /*  *  *  *  *  *  *  */ //G
     /*  *  *  *  *  *  *  */ //B
@@ -151,20 +152,20 @@ void test_pixels() {
     /*  *  *  *  *  *  *  */ //R
     /*  *  *  *  *  *  *  */ //G
 
-    rgb_color led_rows[8][8];
+    rgb_color led_matrix[8][8];
 
     /* Observation: row % 3 == 0 -> R, row % 3 == 1 -> G, row % 3 == 2 -> B. Also, +31 is added to the value to make the color more visible, and the first led of each row not being completely off.
     This is the max value without exceding the value of 255 (255 - (7*32)). */
     for (int row = 0; row < 8; row++) {
         for (int led = 0; led < 8; led++) {
-            led_rows[row][led].r = (row % 3 == 0) ? (led * 32) + 31 : 0;
-            led_rows[row][led].g = (row % 3 == 1) ? (led * 32) + 31 : 0;
-            led_rows[row][led].b = (row % 3 == 2) ? (led * 32) + 31 : 0;
+            led_matrix[row][led].r = (row % 3 == 0) ? (led * 32) + 31 : 0;
+            led_matrix[row][led].g = (row % 3 == 1) ? (led * 32) + 31 : 0;
+            led_matrix[row][led].b = (row % 3 == 2) ? (led * 32) + 31 : 0;
         }
     }
 
     for (int row = 0; row < 8; row++) {
-        mat_set_row(row, led_rows[row]);
+        mat_set_row(row, led_matrix[row]);
         for (int i = 0; i < 8000000; i++) asm volatile ("nop");
         deactivate_rows();
     }
@@ -208,3 +209,27 @@ void test_pixels2(){
         }
     }
 }
+
+// This function displays the image stored in the image.raw in a way that it seems static.
+void test_image() {
+    rgb_color static_image_data[8][8];
+
+    // We cast the label to a pointer to rgb_color to be able to treat the binary data as an array of rgb_color, and sent its address to the raw_data pointer
+    const rgb_color* raw_data = (const rgb_color*)&_binary_image_raw_start; 
+
+    // Parse the raw data into the static_image_data array
+    for (int row = 0; row < 8; row++) {
+        for (int col = 0; col < 8; col++) {
+            static_image_data[row][col] = raw_data[row * 8 + col]; // This calculation essentially gives the index of the "pixel" (individual LED) in the raw data
+        }
+    }
+
+    // This is the same loop as in the test_pixels function, but the delay is sufficiently smaller to make the image appear static as indicated in the guide
+    for (int row = 0; row < 8; row++) {
+        mat_set_row(row, static_image_data[row]);
+        for (int i = 0; i < 20000; i++) asm volatile ("nop"); // Delay
+        deactivate_rows();
+    }
+}
+
+

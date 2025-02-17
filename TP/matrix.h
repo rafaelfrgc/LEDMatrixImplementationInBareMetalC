@@ -25,6 +25,10 @@ typedef struct {
 #define ROW6(state) GPIOB->BSRR |= (state ? GPIO_BSRR_BS0 : GPIO_BSRR_BR0)
 #define ROW7(state) GPIOA->BSRR |= (state ? GPIO_BSRR_BS3 : GPIO_BSRR_BR3)
 
+// This symbol is a reference to the start of the image data that will be linked to form the final executable. Using -nm to list symbols in the image.o file,
+// with this, we can define this variable as extern, and then use it's address to access the image data and parse it into the format we are using. 
+extern const uint8_t _binary_image_raw_start; 
+
 void matrix_init(void);
 void deactivate_rows();
 void activate_row(int row);
@@ -33,5 +37,6 @@ void mat_set_row(int row, const rgb_color* val);
 void init_bank0();
 void test_pixels();
 void test_pixels2();
+void test_image();
 
 #endif

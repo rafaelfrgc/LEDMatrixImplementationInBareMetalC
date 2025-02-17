@@ -29,7 +29,6 @@ void uart_init(){
     USART1->BRR = 694; // This value is obtained by dividing the clock frequency (PCLK) by the desired baud rate as described in the datasheet
 
     // Set 16x oversampling (OVER8 bit to 0)
-
     USART1->CR1 = 0; // Reset the CR1 register
 
     // Set 1 stop bit (STOP[1:0] bits to 00)

@@ -8,6 +8,6 @@ int main(){
     matrix_init();
 
     while(1){
-        test_pixels();
+        test_image();
     }
 }

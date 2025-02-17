@@ -11,4 +11,3 @@ _start:
     
 _exit:
     b _exit             // Infinite loop
-    
