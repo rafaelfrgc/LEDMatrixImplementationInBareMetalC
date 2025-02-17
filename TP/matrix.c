@@ -107,6 +107,8 @@ void activate_row(int row){
         case 7:
             ROW7(1);
             break;
+        default:
+            break;
     }
 }
 
@@ -126,8 +128,8 @@ void mat_set_row(int row, const rgb_color* val){
         send_byte(val[i].g);
         send_byte(val[i].r);   
     }
-    activate_row(row);              // Activate the row to display the values
     pulse_LAT();                    // Pulse the LAT pin to latch the values into the output registers
+    activate_row(row);              // Activate the row to display the values
 }
 
 // This function sets all the bits for BANK0 to 1
@@ -226,6 +228,15 @@ void test_image() {
     // This is the same loop as in the test_pixels function, but the delay is sufficiently smaller to make the image appear static as indicated in the guide
     for (int row = 0; row < 8; row++) {
         mat_set_row(row, static_image_data[row]);
+        for (int i = 0; i < 20000; i++) asm volatile ("nop"); // Delay
+        deactivate_rows();
+    }
+}
+
+// This function is responsible for displaying the frames held in the global frame variable
+void display_frame(const rgb_color* frame){
+    for (int row = 0; row < 8; row++) {
+        mat_set_row(row, &frame[row * 8]); // row*8 sends the address of the first element of each row
         for (int i = 0; i < 20000; i++) asm volatile ("nop"); // Delay
         deactivate_rows();
     }

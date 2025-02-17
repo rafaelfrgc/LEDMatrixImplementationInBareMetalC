@@ -31,12 +31,14 @@ extern const uint8_t _binary_image_raw_start;
 
 void matrix_init(void);
 void deactivate_rows();
-void activate_row(int row);
-void send_byte(uint8_t val);
-void mat_set_row(int row, const rgb_color* val);
+void activate_row(int);
+void send_byte(uint8_t);
+void mat_set_row(int, const rgb_color*);
 void init_bank0();
 void test_pixels();
 void test_pixels2();
 void test_image();
+void display_frame(const rgb_color*);
 
 #endif
+
