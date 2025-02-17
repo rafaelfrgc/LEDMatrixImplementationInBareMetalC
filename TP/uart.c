@@ -84,6 +84,12 @@ extern volatile uint8_t frame[192]; // 64 LEDs with 3 bytes of data for each
 void USART1_IRQHandler(void){
     static int index;
     uint8_t byte = uart_getchar();
+
+    if(USART1->ISR & USART_ISR_ORE || USART1->ISR & USART_ISR_FE){ // Checks if there was an overrun or framing error
+        USART1->ICR |= (USART_ICR_ORECF | USART_ICR_FECF); // Clears the error flags
+        allowReading = 0;
+        return; // Returns if there was an error, so the byte is not processed
+    }
     
     if (byte == 0xFF){ // Marks the start of a new frame
         index = 0;
