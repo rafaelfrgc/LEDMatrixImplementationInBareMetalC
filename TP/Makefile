@@ -12,7 +12,7 @@ SRCS_S = $(wildcard *.s)
 # Derive object files from source files
 OBJS_C = $(SRCS_C:.c=.o)
 OBJS_S = $(SRCS_S:.s=.o)
-OBJS = $(OBJS_C) $(OBJS_S)
+OBJS = $(OBJS_C) $(OBJS_S) clocks.o
 
 TARGET = main.elf
 
@@ -31,6 +31,6 @@ debug: $(TARGET)
 	$(GDB) -x se203.gdb $(TARGET)
 
 clean:
-	rm -f $(OBJS) $(TARGET)
+	rm -f $(filter-out clocks.o, $(OBJS)) $(TARGET)
 
-.PHONY: all connect debug clean
+.PHONY: all clean connect debug
