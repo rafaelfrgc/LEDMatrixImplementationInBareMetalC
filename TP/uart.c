@@ -25,10 +25,9 @@ void uart_init(){
     RCC->APB2RSTR |= RCC_APB2RSTR_USART1RST;
     RCC->APB2RSTR &= ~(RCC_APB2RSTR_USART1RST);
 
-    // Baud rate set to 115200
-    USART1->BRR = 694; // This value is obtained by dividing the clock frequency (PCLK) by the desired baud rate as described in the datasheet
+    // Baud rate set to the value wished
+    USART1->BRR = 80000000/115200; // This value is obtained by dividing the clock frequency (PCLK) by the desired baud rate as described in the datasheet
 
-    // Set 16x oversampling (OVER8 bit to 0)
     USART1->CR1 = 0; // Reset the CR1 register
 
     // Set 1 stop bit (STOP[1:0] bits to 00)
@@ -36,6 +35,7 @@ void uart_init(){
 
     // Enable the transmitter and receiver
     USART1->CR1 |= (USART_CR1_TE | USART_CR1_RE | USART_CR1_UE);
+
 }
 
 // Sends a char to the serial port

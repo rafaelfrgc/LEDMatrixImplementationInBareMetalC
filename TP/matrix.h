@@ -12,7 +12,7 @@ typedef struct {
 
 #define RST(state) GPIOC->BSRR |= (state ? GPIO_BSRR_BS3 : GPIO_BSRR_BR3)
 #define LAT(state) GPIOC->BSRR |= (state ? GPIO_BSRR_BS4 : GPIO_BSRR_BR4)
-#define SB(state) GPIOC->BSRR |= (state ? GPIO_BSRR_BS5 : GPIO_BSRR_BR5)
+#define SB(state)  GPIOC->BSRR |= (state ? GPIO_BSRR_BS5 : GPIO_BSRR_BR5)
 #define SCK(state) GPIOB->BSRR |= (state ? GPIO_BSRR_BS1 : GPIO_BSRR_BR1)
 #define SDA(state) GPIOA->BSRR |= (state ? GPIO_BSRR_BS4 : GPIO_BSRR_BR4)
 
@@ -27,7 +27,7 @@ typedef struct {
 
 // This symbol is a reference to the start of the image data that will be linked to form the final executable. Using -nm to list symbols in the image.o file,
 // with this, we can define this variable as extern, and then use it's address to access the image data and parse it into the format we are using. 
-extern const uint8_t _binary_image_raw_start; 
+extern const uint8_t _binary_image_raw_start;  
 
 void matrix_init(void);
 void deactivate_rows();

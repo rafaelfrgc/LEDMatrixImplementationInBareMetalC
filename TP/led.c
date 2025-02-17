@@ -18,10 +18,15 @@ void led_g_on(void){
     GPIOB->BSRR = GPIO_BSRR_BS14; 
 }
 
-
-// Turns off the LED by setting the 30th bit of the GPIOB_BSRR to 1 (reset value)
+// Turns off the LED by setting the 30th bit of the GPIOB_BS            RR to 1 (reset value)
 void led_g_off(void){                                       
     GPIOB->BSRR = GPIO_BSRR_BR14;  
+}
+
+// Toggles the LED by checking if the 14th bit of the GPIOB_ODR register is 1 or 0 and then turning it on or off, respectively
+void led_g_toggle(void){
+    if (GPIOB->ODR & GPIO_ODR_OD14) led_g_off(); // If the led is on, turn it off
+    else led_g_on();
 }
 
 void led_state(state s){

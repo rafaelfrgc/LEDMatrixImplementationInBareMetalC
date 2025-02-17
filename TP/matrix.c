@@ -52,7 +52,6 @@ void matrix_init(){
     SB(1); // Select BANK1 as the default bank  
 }
 
-
 void pulse_SCK(){
     SCK(0);
     for (int i = 0; i < 2; i++) asm volatile ("nop"); // Wait for 2 cycles (aprox 25ns)
@@ -231,5 +230,3 @@ void test_image() {
         deactivate_rows();
     }
 }
-
-

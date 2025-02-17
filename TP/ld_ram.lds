@@ -7,6 +7,13 @@ _stack = ORIGIN(SRAM1) + LENGTH(SRAM1);
 
 SECTIONS
 {
+    /* Interrupt service routine table. This must be explicitly initialized here as the program expects to find the interrupt handlers table
+    in the beggining of the RAM */
+    .isr_vector : 
+    {
+        KEEP(*(.isr_vector)) /* KEEP tells the linker to keep the section even if it seems unused */
+    } > SRAM1
+
     .text :
     {
         *(.text*) /* Includes all .text subsections */
