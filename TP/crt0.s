@@ -4,6 +4,8 @@
 .thumb
 
 .global _start
+
+.thumb_func
 _start:
     ldr sp, =_stack // Loads the stack pointer with the address of the top of the stack
     bl init_bss

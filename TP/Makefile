@@ -16,7 +16,7 @@ SRCS_RAW = $(wildcard *.raw)
 OBJS_C = $(SRCS_C:.c=.o)
 OBJS_S = $(SRCS_S:.s=.o)
 OBJS_RAW = $(SRCS_RAW:.raw=.o)
-OBJS   = $(OBJS_C) $(OBJS_S) $(OBJS_RAW) clocks.o
+OBJS   = $(OBJS_C) $(OBJS_S) $(OBJS_RAW)
 
 TARGET = main.elf
 
@@ -43,6 +43,6 @@ uart:
 	JLinkExe -device STM32L475VG -if SWD -autoconnect 1 -speed auto
 
 clean:
-	rm -f $(filter-out clocks.o, $(OBJS)) $(TARGET)
+	rm -f  $(OBJS) $(TARGET)
 
 .PHONY: all connect debug clean

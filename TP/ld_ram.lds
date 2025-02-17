@@ -1,6 +1,8 @@
 MEMORY
 {
+    FLASH (rx)  : ORIGIN = 0x08000000, LENGTH = 1M
     SRAM1 (rwx) : ORIGIN = 0x20000000, LENGTH = 96K
+    SRAM2 (rwx) : ORIGIN = 0x10000000, LENGTH = 32K
 }
 
 _stack = ORIGIN(SRAM1) + LENGTH(SRAM1);
@@ -12,22 +14,22 @@ SECTIONS
     .isr_vector : 
     {
         KEEP(*(.isr_vector)) /* KEEP tells the linker to keep the section even if it seems unused */
-    } > SRAM1
+    } > FLASH
 
     .text :
     {
         *(.text*) /* Includes all .text subsections */
-    } > SRAM1
+    } > FLASH
 
     .rodata :
     {
         *(.rodata*)
-    } > SRAM1
+    } > FLASH
 
     .data :
     {
         *(.data*)
-    } > SRAM1
+    } > FLASH
 
     .bss :
     {
