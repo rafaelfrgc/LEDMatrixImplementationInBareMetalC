@@ -1,13 +1,9 @@
 #include "buttons.h"
-#include "led.h"
 
-/* To configure a line as an interrupt source (the case of a GPIO pin), the following steps are required:
-1. Configure the corresponding mask bit in the EXTI_IMR register.
-2. Configure the Trigger Selection bits of the Interrupt line (EXTI_RTSR and EXTI_FTSR).
-3. Configure the enable and mask bits that control the NVIC IRQ channel mapped to the
-EXTI so that an interrupt coming from one of the EXTI lines can be correctly
-acknowledged.
-*/
+// Steps to configure a GPIO pin as an interrupt source:
+// 1. Set the mask bit in EXTI_IMR.
+// 2. Set the trigger selection bits in EXTI_RTSR and EXTI_FTSR.
+// 3. Enable and mask the NVIC IRQ channel for the EXTI line.
 void button_init(void){
     // Enable GPIOC clock
     RCC->AHB2ENR |= RCC_AHB2ENR_GPIOCEN;

@@ -4,6 +4,7 @@
 #include "matrix.h"
 #include "irq.h"
 #include "buttons.h"
+#include "timer.h"
 
 volatile rgb_color frame[192];
 
@@ -14,9 +15,9 @@ int main(){
     matrix_init();
     irq_init();
     button_init();
+    timer_init(1000000/60);
 
     while(1){
-        display_frame((rgb_color*)frame);
     }
     
     return 0; 

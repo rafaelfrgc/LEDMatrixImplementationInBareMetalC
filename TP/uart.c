@@ -82,7 +82,7 @@ extern volatile uint8_t frame[192]; // 64 LEDs with 3 bytes of data for each
 
 // Is called every time data is received in the USART1 to handle the byte received
 void USART1_IRQHandler(void){
-    static int index;
+    static int index = 0;
     uint8_t byte = uart_getchar();
 
     if(USART1->ISR & USART_ISR_ORE || USART1->ISR & USART_ISR_FE){ // Checks if there was an overrun or framing error
