@@ -1,0 +1,4 @@
+*.o
+*.elf
+!clocks.o
+venv/

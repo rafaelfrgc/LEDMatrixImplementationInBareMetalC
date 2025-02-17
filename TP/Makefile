@@ -1,8 +1,8 @@
-GDB     = arm-none-eabi-gdb
+GDB     = gdb-multiarch
 CC      = arm-none-eabi-gcc
 AS	    = arm-none-eabi-as
 ASFLAGS = -g
-CFLAGS  = -g -O0 -ffreestanding -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 \
+CFLAGS  = -g -O1 -ffreestanding -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 \
           -ICMSIS/Device/ST/STM32L4xx/Include -ICMSIS/Include
 LDFLAGS = -nostdlib -T ld_ram.lds
 

@@ -1,5 +1,4 @@
 #include "led.h"
-#include "CMSIS/Device/ST/STM32L4xx/Include/stm32l475xx.h"
 
 /*
 Sets up the GPIOB and GPIOC pins and clocks for the LEDs
@@ -10,9 +9,8 @@ the yellow and blue LEDs. Also, I decided to do the operations as bit manipulati
 not needing to overwrite the entire register value.
  */
 void led_init(void){
-    RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN;    // For GPIOB
-    RCC->AHB2ENR |= RCC_AHB2ENR_GPIOCEN;    // For GPIOC
-    GPIOB->MODER &= ~(GPIO_MODER_MODE14_Msk) | (GPIO_MODER_MODE14_0); // Set GPIOB pin 14 as output
+    RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN | RCC_AHB2ENR_GPIOCEN;    // For GPIOB and C
+    GPIOB->MODER = (GPIOB->MODER & ~GPIO_MODER_MODE14_Msk) | (GPIO_MODER_MODE14_0); // Set GPIOB pin 14 as output
 }
 
 // Turns on the LED by setting the 14th bit of the GPIOB_BSRR register to 1 
@@ -21,7 +19,7 @@ void led_g_on(void){
 }
 
 
-// Turns off the LED by setting the 30th bit of the GPIOB_BS            RR to 1 (reset value)
+// Turns off the LED by setting the 30th bit of the GPIOB_BSRR to 1 (reset value)
 void led_g_off(void){                                       
     GPIOB->BSRR = GPIO_BSRR_BR14;  
 }
@@ -29,15 +27,15 @@ void led_g_off(void){
 void led_state(state s){
     switch(s){
         case LED_OFF:
-            GPIOC->MODER |= (GPIO_MODER_MODE9_Msk);  // Set GPIOC pin 9 to reset state (default state)
+            GPIOC->MODER = (GPIOC->MODER | GPIO_MODER_MODE9_Msk);  // Set GPIOC pin 9 to reset state (default state)
             break;
         case LED_YELLOW:
-            GPIOC->MODER &= ~(GPIO_MODER_MODE9_Msk) | (GPIO_MODER_MODE9_0); // Set GPIOC pin 9 as output
-            GPIOC->BSRR |= GPIO_BSRR_BS9;
+            GPIOC->MODER = (GPIOC->MODER & ~GPIO_MODER_MODE9_Msk) | GPIO_MODER_MODE9_0; // Set GPIOC pin 9 as output
+            GPIOC->BSRR = GPIO_BSRR_BS9;
             break;
         case LED_BLUE:
-            GPIOC->MODER &= ~(GPIO_MODER_MODE9_Msk) | (GPIO_MODER_MODE9_0); // Set GPIOC pin 9 as output
-            GPIOC->BSRR  |= GPIO_BSRR_BR9;
+            GPIOC->MODER = (GPIOC->MODER & ~GPIO_MODER_MODE9_Msk) | GPIO_MODER_MODE9_0; // Set GPIOC pin 9 as output
+            GPIOC->BSRR = GPIO_BSRR_BR9;
             break;
     }
 }

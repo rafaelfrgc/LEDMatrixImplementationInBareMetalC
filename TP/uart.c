@@ -7,16 +7,16 @@ void uart_init(){
     USART1->CR1 &= ~USART_CR1_UE;
 
     // Enables clock for GPIOB and USART1
-    RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN; 
-    RCC->APB2ENR |= RCC_APB2ENR_USART1EN;   
+    RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN;
+    RCC->APB2ENR |= RCC_APB2ENR_USART1EN;
 
     // Resets the bits for GPIOB pins 6 and 7 and sets them to alternate function mode
-    GPIOB->MODER &= ~(GPIO_MODER_MODE6_Msk | GPIO_MODER_MODE7_Msk);
-    GPIOB->MODER |= (GPIO_MODER_MODE6_1 | GPIO_MODER_MODE7_1);
+    GPIOB->MODER = (GPIOB->MODER & ~(GPIO_MODER_MODE6_Msk)) | (GPIO_MODER_MODE6_1);
+    GPIOB->MODER = (GPIOB->MODER & ~(GPIO_MODER_MODE7_Msk)) | (GPIO_MODER_MODE7_1);
 
     // To select which alternate function we desire, we need to set the correct bits in the AFR register (AF7)
-    GPIOB->AFR[0] |= (GPIO_AFRL_AFSEL6_Msk | GPIO_AFRL_AFSEL7_Msk);
-    GPIOB->AFR[0] &= ~(GPIO_AFRL_AFSEL6_3 | GPIO_AFRL_AFSEL7_3); 
+    GPIOB->AFR[0] = (GPIOB->AFR[0] | (GPIO_AFRL_AFSEL6_Msk)) & ~(GPIO_AFRL_AFSEL6_3);
+    GPIOB->AFR[0] = (GPIOB->AFR[0] | (GPIO_AFRL_AFSEL7_Msk)) & ~(GPIO_AFRL_AFSEL7_3);
 
     // Select the clock source as PCLK
     RCC->CCIPR &= ~(RCC_CCIPR_USART1SEL); 
@@ -29,17 +29,14 @@ void uart_init(){
     USART1->BRR = 694; // This value is obtained by dividing the clock frequency (PCLK) by the desired baud rate as described in the datasheet
 
     // Set 16x oversampling (OVER8 bit to 0)
-    USART1->CR1 &= ~(USART_CR1_OVER8);
 
-    // Set data length to 8 bits (M[1:0] bits to 00)
-    USART1->CR1 &= ~(USART_CR1_M | USART_CR1_M0);
+    USART1->CR1 = 0; // Reset the CR1 register
 
     // Set 1 stop bit (STOP[1:0] bits to 00)
     USART1->CR2 &= ~(USART_CR2_STOP);
 
     // Enable the transmitter and receiver
     USART1->CR1 |= (USART_CR1_TE | USART_CR1_RE | USART_CR1_UE);
-
 }
 
 // Sends a char to the serial port

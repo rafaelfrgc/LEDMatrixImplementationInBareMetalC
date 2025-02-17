@@ -3,6 +3,8 @@ MEMORY
     SRAM1 (rwx) : ORIGIN = 0x20000000, LENGTH = 96K
 }
 
+_stack = ORIGIN(SRAM1) + LENGTH(SRAM1);
+
 SECTIONS
 {
     .text :
