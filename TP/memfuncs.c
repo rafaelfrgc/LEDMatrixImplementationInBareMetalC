@@ -1,6 +1,10 @@
 #include "memfuncs.h"
 
+// Note: after the XIP implementation, the functions in this file need to be placed in the .bootloader section
+// to allow the bootloader to copy the functions to RAM
+
 // my_memcpy: copies size bytes from src to dest
+__attribute__((section(".bootloader")))
 void* my_memcpy (void* dest, void* src, size_t size){
     if (size == 0) return dest; // If size is 0, there is nothing to copy
 
@@ -14,6 +18,7 @@ void* my_memcpy (void* dest, void* src, size_t size){
 }
 
 // my_memset: sets size bytes in dest to val
+__attribute__((section(".bootloader")))
 void* my_memset (void* dest, size_t val, size_t size){
     if (size == 0) return dest;
 
@@ -26,6 +31,7 @@ void* my_memset (void* dest, size_t val, size_t size){
 }
 
 // my_memcmp: compares size bytes of dest and src
+__attribute__((section(".bootloader")))
 int my_memcmp (void* dest, void* src, size_t size){
     if(size == 0) return 0; 
 
@@ -39,6 +45,7 @@ int my_memcmp (void* dest, void* src, size_t size){
 }
 
 // my_memmove: copies size bytes from src to dest, even if they overlap
+__attribute__((section(".bootloader")))
 void* my_memmove(void* dest, void* src, size_t size){
     if (size == 0 || dest == src) return dest; // If size is 0 or dest and src are the same, there is nothing to copy
 

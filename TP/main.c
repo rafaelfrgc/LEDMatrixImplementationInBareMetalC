@@ -17,8 +17,7 @@ int main(){
     button_init();
     timer_init(1000000/60);
 
-    while(1){
-    }
+    while(1)
     
     return 0; 
 }

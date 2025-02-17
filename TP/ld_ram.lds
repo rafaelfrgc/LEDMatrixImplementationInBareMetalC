@@ -5,7 +5,7 @@ MEMORY
     SRAM2 (rwx) : ORIGIN = 0x10000000, LENGTH = 32K
 }
 
-_stack = ORIGIN(SRAM1) + LENGTH(SRAM1);
+_stack = ORIGIN(SRAM2) + LENGTH(SRAM2);
 
 SECTIONS
 {
@@ -13,13 +13,17 @@ SECTIONS
     in the beggining of the RAM */
     .isr_vector : 
     {
+        _sisr_vector = .;
         KEEP(*(.isr_vector)) /* KEEP tells the linker to keep the section even if it seems unused */
-    } > FLASH
+        _eisr_vector = .;
+    } > SRAM1 AT> FLASH /* AT> FLASH tells the linker to place the section in the FLASH memory and copy it to the SRAM */
 
     .text :
     {
+        _stext = .;
         *(.text*) /* Includes all .text subsections */
-    } > FLASH
+        _etext = .;
+    } > SRAM1 AT> FLASH
 
     .rodata :
     {
@@ -28,8 +32,10 @@ SECTIONS
 
     .data :
     {
+        _sdata = .;
         *(.data*)
-    } > FLASH
+        _edata = .;
+    } > SRAM1 AT> FLASH
 
     .bss :
     {
@@ -38,6 +44,17 @@ SECTIONS
         *(COMMON)
         _ebss = .; /* Define a global symbol at bss section end */
     } > SRAM1
+
+    /* Code responsible for copying sections, must stay in flash, as this guarantees that the code will not be overwritten */
+    .bootloader :
+    {
+        *(.bootloader*)
+    } > FLASH
+
+    /* These symbols mark the load addresses in FLASH for copying */
+    _isr_vector_load = LOADADDR(.isr_vector);
+    _text_load = LOADADDR(.text);
+    _data_load = LOADADDR(.data);
 }
 
 ENTRY(_start)

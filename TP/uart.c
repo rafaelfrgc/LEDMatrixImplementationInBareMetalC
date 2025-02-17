@@ -1,4 +1,4 @@
-#include "uart.h"
+#include "uart.h" 
 
 // This variable is used to allow the reading of the frame only when a 0xFF byte is received, impeding the reading of "noise"
 static char allowReading = 0;
