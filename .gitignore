@@ -1,5 +1,0 @@
-*.o
-*.elf
-*.pdf
-!clocks.o
-venv/
